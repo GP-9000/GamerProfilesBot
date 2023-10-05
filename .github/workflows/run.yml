@@ -1,0 +1,46 @@
+name: Run GamerProfilesBot
+
+on:
+  workflow_dispatch:
+    inputs:
+      number_of_games:
+        type: number
+        description: The maximum number of games to update in Wikidata
+        required: true
+        default: 10
+      put_throttle:
+        type: number
+        description: The number of seconds to wait between each PUT request
+        required: true
+        default: 0
+env:
+  CI: true
+jobs:
+  run-bot:
+    name: Update Wikidata via GamerProfilesBot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+      - run: python main.py | tee botlog.txt
+        env:
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          PYWIKIBOT_DIR: '.'
+          WIKIDATA_BOT_USERNAME: GamerProfilesBot
+          WIKIDATA_BOT_SUFFIX: GamerProfilesBot
+          WIKIDATA_BOT_PASSWORD: ${{ secrets.WIKIDATA_BOT_PASSWORD }}
+          WIKIDATA_PUT_THROTTLE: ${{ github.event.inputs.put_throttle }}
+          GAME_LIMIT: ${{ github.event.inputs.number_of_games }}
+      - name: Archive updated games
+        uses: actions/upload-artifact@v3
+        with:
+          name: botlog
+          path: log.txt

@@ -1,0 +1,6 @@
+.env*
+apicache-py3
+.venv
+pywikibot-GamerProfilesBot.lwp
+README.md
+throttle.ctrl
