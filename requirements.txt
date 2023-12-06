@@ -4,6 +4,6 @@ dnspython==2.4.2
 idna==3.4
 mwparserfromhell==0.6.5
 pymongo==4.5.0
-pywikibot==8.3.3
+pywikibot==8.6.0
 requests==2.31.0
 urllib3==2.0.6
