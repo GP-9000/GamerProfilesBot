@@ -40,7 +40,7 @@ jobs:
           WIKIDATA_PUT_THROTTLE: ${{ github.event.inputs.put_throttle }}
           GAME_LIMIT: ${{ github.event.inputs.number_of_games }}
       - name: Archive updated games
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: botlog
           path: botlog.txt
